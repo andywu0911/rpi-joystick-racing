@@ -1,0 +1,6 @@
+flask
+
+# Raspberry Pi only (without these the app runs in mock mode)
+RPi.GPIO
+spidev
+mfrc522

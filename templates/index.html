@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joystick Racing - 搖桿賽車</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-wrapper">
+        <header>
+            <h1>Joystick Racing</h1>
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="label">SCORE</span>
+                    <span id="score-display">0</span>
+                </div>
+                <div class="stat-box">
+                    <span class="label">MODE</span>
+                    <span id="mode-display">DAY</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="canvas-container">
+            <div id="nitro-status" style="position: absolute; bottom: 15px; right: 15px; font-weight: bold; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; z-index: 10;"></div>
+            <canvas id="gameCanvas" width="400" height="600"></canvas>
+            
+            <div id="start-screen" class="overlay">
+                <h2>Ready?</h2>
+                <p>按下實體按鍵開始</p>
+                <div class="hint" style="margin: 25px auto 0; width: fit-content; display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+                    <div style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 1.1rem; filter: grayscale(0.2);">🕹️</span><span style="color: #aaa; font-size: 0.95rem; letter-spacing: 1px;">搖桿控制左右</span></div>
+                    <div style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 1.1rem; filter: grayscale(0.2);">💳</span><span style="color: #aaa; font-size: 0.95rem; letter-spacing: 1px;">刷 RFID 更換跑車</span></div>
+                    <div style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 1.1rem; filter: grayscale(0.2);">🌙</span><span style="color: #aaa; font-size: 0.95rem; letter-spacing: 1px;">遮住光敏切換黑夜</span></div>
+                </div>
+            </div>
+            
+            <div id="game-over-screen" class="overlay hidden">
+                <h2>GAME OVER!</h2>
+                <p>Final Score: <span id="final-score">0</span></p>
+                <p class="blink-text" style="font-size: 1.4rem; color: #00f3ff; font-weight: 500; margin-top: 25px; letter-spacing: 3px; text-shadow: 0 0 10px rgba(0,243,255,0.8); animation: pulse-opacity 1.5s ease-in-out infinite;">按下按鈕重新開始</p>
+                <style>@keyframes pulse-opacity { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }</style>
+                <div style="margin-top: 15px; margin-bottom: 20px; background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+                    <p style="font-size: 0.9rem; color: #eee; margin: 0; letter-spacing: 1px;">💳 刷 RFID 更換 VIP 跑車</p>
+                </div>
+            </div>
+
+            <!-- VIP Modal Floating Over Everything -->
+            <div id="vip-section" class="hidden" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 85%; background: rgba(20, 20, 30, 0.85); backdrop-filter: blur(8px); padding: 15px; border-radius: 16px; text-align: center; border: 1px solid rgba(255, 215, 0, 0.5); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                <h3 style="color: gold; text-shadow: 0 0 15px rgba(255,215,0,0.8); font-family: 'Orbitron', sans-serif; font-size: 1.2rem; margin: 0;">VIP UNLOCKED</h3>
+                <p style="font-size: 0.8rem; color: #ddd; margin: 0;">搖桿選色 / 按鍵確認</p>
+                <div id="color-options" style="display: flex; gap: 15px; justify-content: center;">
+                    <div class="color-btn" data-color="#ffd700" style="background: #ffd700; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid white;"></div>
+                    <div class="color-btn" data-color="#ff003c" style="background: #ff003c; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                    <div class="color-btn" data-color="#00f3ff" style="background: #00f3ff; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                    <div class="color-btn" data-color="#39ff14" style="background: #39ff14; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-info">
+            <h3>Debug / State</h3>
+            <p>Joystick X: <span id="debug-x">512</span> | Y: <span id="debug-y">512</span></p>
+            <p>Light Sensor: <span id="debug-light">800</span></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>
